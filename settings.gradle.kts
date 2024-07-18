@@ -1,4 +1,4 @@
-rootProject.name = "course"
+rootProject.name = "otus-course"
 include("L01-gradle")
 
 pluginManagement {
