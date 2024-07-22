@@ -34,7 +34,7 @@ public class CustomerService {
 
   public Map.Entry<Customer, String> getNext(Customer customer) {
     Map.Entry<Customer, String> nextEntry = customers.higherEntry(customer);
-    if (nextEntry == null || nextEntry.getKey().getScores() <= customer.getScores()) {
+    if (nextEntry == null) {
       return null;
     }
 
