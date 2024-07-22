@@ -1,5 +1,5 @@
 rootProject.name = "otus-course"
-include("L01-gradle")
+include("L01")
 
 include("L02")
 
