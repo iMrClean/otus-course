@@ -13,9 +13,9 @@ public class CustomerService {
     Comparator.comparingLong(Customer::getScores)
   );
 
-  private Map.Entry<Customer, String> getEntry(Map.Entry<Customer, String> firstEntry) {
+  private Map.Entry<Customer, String> getEntry(Map.Entry<Customer, String> entry) {
     return Map.entry(
-      new Customer(firstEntry.getKey().getId(), firstEntry.getKey().getName(), firstEntry.getKey().getScores()), firstEntry.getValue()
+      new Customer(entry.getKey().getId(), entry.getKey().getName(), entry.getKey().getScores()), entry.getValue()
     );
   }
 
