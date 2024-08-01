@@ -27,17 +27,10 @@ public class TestExecutor {
     try {
       // Выполнение методов BeforeAll
       invokeMethods(methodMap.get(AnnotationType.BEFORE_ALL), null);
-    } catch (Exception e) {
-      // Если BeforeAll завершился с ошибкой, все равно выполнить AfterAll
-      invokeMethods(methodMap.get(AnnotationType.AFTER_ALL), null);
-      throw e;
-    }
-
-    try {
       // Выполнение тестов
       executeTestMethods(methodMap, testClass);
     } finally {
-      // Выполнение методов AfterAll
+      // Если BeforeAll завершился с ошибкой, все равно выполнить AfterAll
       invokeMethods(methodMap.get(AnnotationType.AFTER_ALL), null);
     }
   }
