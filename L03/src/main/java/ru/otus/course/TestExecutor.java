@@ -24,23 +24,22 @@ public class TestExecutor {
    * @throws Exception Если происходит ошибка при выполнении методов.
    */
   public static void executeTests(Class<?> testClass, Map<AnnotationType, List<Method>> methodMap) throws Exception {
-    boolean beforeAllSucceeded = false;
     try {
       // Выполнение методов BeforeAll
       invokeMethods(methodMap.get(AnnotationType.BEFORE_ALL), null);
-      beforeAllSucceeded = true;
-    } finally {
-      if (!beforeAllSucceeded) {
-        // Если BeforeAll завершился с ошибкой, все равно выполнить AfterAll
-        invokeMethods(methodMap.get(AnnotationType.AFTER_ALL), null);
-      }
+    } catch (Exception e) {
+      // Если BeforeAll завершился с ошибкой, все равно выполнить AfterAll
+      invokeMethods(methodMap.get(AnnotationType.AFTER_ALL), null);
+      throw e;
     }
 
-    // Выполнение тестов
-    executeTestMethods(methodMap, testClass);
-
-    // Выполнение методов AfterAll
-    invokeMethods(methodMap.get(AnnotationType.AFTER_ALL), null);
+    try {
+      // Выполнение тестов
+      executeTestMethods(methodMap, testClass);
+    } finally {
+      // Выполнение методов AfterAll
+      invokeMethods(methodMap.get(AnnotationType.AFTER_ALL), null);
+    }
   }
 
   /**
@@ -51,8 +50,10 @@ public class TestExecutor {
    * @throws Exception Если происходит ошибка при вызове метода.
    */
   private static void invokeMethods(List<Method> methods, Object instance) throws Exception {
-    for (Method method : methods) {
-      invokeMethod(method, instance);
+    if (methods != null) {
+      for (Method method : methods) {
+        invokeMethod(method, instance);
+      }
     }
   }
 
@@ -88,9 +89,8 @@ public class TestExecutor {
     int passedTests = 0;
 
     for (Method testMethod : testMethods) {
-      Object testInstance = null;
+      Object testInstance = testClass.getDeclaredConstructor().newInstance();
       try {
-        testInstance = testClass.getDeclaredConstructor().newInstance();
         invokeMethods(beforeMethods, testInstance);
         invokeMethod(testMethod, testInstance);
         passedTests++;
