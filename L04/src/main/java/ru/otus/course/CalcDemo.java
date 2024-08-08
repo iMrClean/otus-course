@@ -33,12 +33,12 @@ public class CalcDemo {
     var summator = new Summator();
     long startTime = System.currentTimeMillis();
 
-    var data = withOptimization ? null : new Data(); // Инициализация `Data` в зависимости от оптимизации
+    var data = withOptimization ?  new Data() : null; // Инициализация `Data` в зависимости от оптимизации
     for (int idx = 0; idx < counter; idx++) {
       if (withOptimization) {
-        data = new Data(idx); // Создание нового объекта `Data` при оптимизации
+        data.set_value(idx); // Установка значения при оптимизации
       } else {
-        data.set_value(idx); // Установка значения при отсутствии оптимизации
+        data = new Data(idx); // Создание нового объекта `Data` при отсутствии оптимизации
       }
       summator.calc(data, withOptimization);
 
