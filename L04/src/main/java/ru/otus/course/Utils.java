@@ -3,14 +3,11 @@ package ru.otus.course;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -65,7 +62,8 @@ public class Utils {
       heapSize, executionTimeInSeconds, gcType, withOptimization
     );
 
-    String fileName = String.format("%s_%dMB.json", gcType.replace(" ", "_"), heapSize);
+    String opt = withOptimization ? "opt" : "non";
+    String fileName = String.format("%s_%s_%dMB.json", gcType.replace(" ", "_"), opt, heapSize);
 
     // Определение пути к файлу
     String path = "src/main/resources/" + fileName;
@@ -76,6 +74,7 @@ public class Utils {
       log.error("Error writing result to JSON", e);
     }
   }
+
   private static void logOptimizedResults(Summator summator) {
     log.info("PrevValue:{}", summator.get_prevValue());
     log.info("PrevPrevValue:{}", summator.get_prevPrevValue());
