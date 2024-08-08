@@ -1,6 +1,0 @@
-{
-  "heap_size": "256 MB",
-  "time": "4sec",
-  "gc": "G1 Young GenerationG1 Concurrent GCG1 Old Generation",
-  "optimization": true
-}

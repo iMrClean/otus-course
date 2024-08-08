@@ -50,15 +50,15 @@ public class Summator {
     if (_listValues.size() % 100_000 == 0) {
       _listValues.clear();
     }
-    _sum += data.getValue();
+    _sum += data.get_value();
 
-    _sumLastThreeValues = data.getValue() + _prevValue + _prevPrevValue;
+    _sumLastThreeValues = data.get_value() + _prevValue + _prevPrevValue;
 
     _prevPrevValue = _prevValue;
-    _prevValue = data.getValue();
+    _prevValue = data.get_value();
 
     for (var idx = 0; idx < 3; idx++) {
-      _someValue += (_sumLastThreeValues * _sumLastThreeValues / (data.getValue() + 1) - _sum);
+      _someValue += (_sumLastThreeValues * _sumLastThreeValues / (data.get_value() + 1) - _sum);
       _someValue = Math.abs(_someValue) + _listValues.size();
     }
   }
