@@ -2,6 +2,7 @@ rootProject.name = "otus-course"
 include("L01")
 include("L02")
 include("L03")
+include("L04")
 
 pluginManagement {
   val jgitver: String by settings

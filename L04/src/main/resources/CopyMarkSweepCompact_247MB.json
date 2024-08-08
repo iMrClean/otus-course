@@ -1,0 +1,6 @@
+{
+  "heap_size": "247 MB",
+  "time": "3sec",
+  "gc": "CopyMarkSweepCompact",
+  "optimization": true
+}
