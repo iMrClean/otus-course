@@ -2,70 +2,58 @@ package ru.otus.course;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.otus.course.domain.Banknote;
+import ru.otus.course.domain.Currency;
+import ru.otus.course.service.ATM;
+import ru.otus.course.service.BankATM;
+import ru.otus.course.storage.BankStorage;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
-/**
- * Написать эмулятор АТМ (банкомата).
- * АТМ должен уметь:
- * Принимать банкноты разных номиналов (на каждый номинал должна быть своя ячейка)
- * Выдавать запрошенную сумму минимальным количеством банкнот или ошибку, если сумму нельзя выдать.
- * Выдавать сумму остатка денежных средств
- */
 public class Main {
 
   private static final Logger log = LoggerFactory.getLogger(Main.class);
 
-  private static final ATM atm = new ATM();
+  private static final ATM atm = new BankATM(new BankStorage());
 
   public static void main(String[] args) {
-    initializeATM();
-    logBalance("Баланс после инициализации");
+    logBalance();
+    atm.deposit(Collections.singletonList(new Banknote(1, Currency.USD)));
+    atm.deposit(Collections.singletonList(new Banknote(2, Currency.USD)));
+    atm.deposit(Collections.singletonList(new Banknote(5, Currency.USD)));
+    atm.deposit(Collections.singletonList(new Banknote(10, Currency.USD)));
+    atm.deposit(Collections.singletonList(new Banknote(20, Currency.USD)));
+    atm.deposit(Collections.singletonList(new Banknote(50, Currency.USD)));
+    atm.deposit(Collections.singletonList(new Banknote(100, Currency.USD)));
 
-    int amount = 2700;
-    processWithdrawal(amount);
+    atm.deposit(Collections.singletonList(new Banknote(5, Currency.EUR)));
+    atm.deposit(Collections.singletonList(new Banknote(10, Currency.EUR)));
+    atm.deposit(Collections.singletonList(new Banknote(20, Currency.EUR)));
+    atm.deposit(Collections.singletonList(new Banknote(50, Currency.EUR)));
+    atm.deposit(Collections.singletonList(new Banknote(100, Currency.EUR)));
+    atm.deposit(Collections.singletonList(new Banknote(500, Currency.EUR)));
 
-    logBalance("Баланс после первого снятия");
+    atm.deposit(Collections.singletonList(new Banknote(100, Currency.RUB)));
+    atm.deposit(Collections.singletonList(new Banknote(200, Currency.RUB)));
+    atm.deposit(Collections.singletonList(new Banknote(500, Currency.RUB)));
+    atm.deposit(Collections.singletonList(new Banknote(1000, Currency.RUB)));
+    atm.deposit(Collections.singletonList(new Banknote(2000, Currency.RUB)));
+    atm.deposit(Collections.singletonList(new Banknote(5000, Currency.RUB)));
 
-    atm.deposit(10, 10);
-    logBalance("Баланс после внесения новых банкнот");
+    logBalance();
 
-    processWithdrawal(amount);
-
-    logBalance("Баланс после второго снятия");
+    List<Banknote> withdraw = atm.withdraw(1000, Currency.RUB);
+    log.info("Выдано {}", withdraw);
+    logBalance();
   }
 
-  /**
-   * Инициализировать банкомат начальными значениями банкнот.
-   */
-  private static void initializeATM() {
-    atm.deposit(100, 10);
-    atm.deposit(50, 20);
-    atm.deposit(20, 30);
-  }
-
-  /**
-   * Выполнить обработку запроса на снятие наличных.
-   *
-   * @param amount Запрашиваемая сумма.
-   */
-  private static void processWithdrawal(int amount) {
-    try {
-      log.info("Запрашиваемый баланс: {}", amount);
-      Map<Integer, Integer> withdrawnNotes = atm.withdraw(amount);
-      log.info("Выданные банкноты: {}", withdrawnNotes);
-    } catch (IllegalArgumentException e) {
-      log.error(e.getMessage());
-    }
-  }
-
-  /**
-   * Текущий баланс банкомата.
-   *
-   * @param message Сообщение для логирования.
-   */
-  private static void logBalance(String message) {
-    log.info("{}: {}", message, atm.getBalance());
+  private static void logBalance() {
+    Map<Currency, Double> balance = atm.getBalance();
+    log.info("Баланс [RUB {}]", balance.get(Currency.RUB));
+    log.info("Баланс {}", "EUR " + balance.get(Currency.EUR));
+    log.info("Баланс {}", "USD " + balance.get(Currency.USD));
   }
 
 }
