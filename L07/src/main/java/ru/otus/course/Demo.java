@@ -13,6 +13,7 @@ import ru.otus.course.processor.ProcessorUpperField10;
 import ru.otus.course.processor.homework.ProcessorEvenSecondException;
 import ru.otus.course.processor.homework.ProcessorSwapFields;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Demo {
@@ -52,10 +53,9 @@ public class Demo {
   }
 
   private static void processingHomework() {
-    var processors = List.of(new LoggerProcessor(new ProcessorEvenSecondException()), new ProcessorSwapFields());
+    var processors = List.of(new ProcessorEvenSecondException(LocalDateTime::now), new LoggerProcessor(new ProcessorSwapFields()));
 
-    var complexProcessor = new ComplexProcessor(processors, ex -> {
-    });
+    var complexProcessor = new ComplexProcessor(processors, ex -> { });
     var listenerPrinter = new ListenerPrinterConsole();
     var historyListener = new HistoryListener();
     complexProcessor.addListener(listenerPrinter);
