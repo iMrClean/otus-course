@@ -9,6 +9,7 @@ include("L06")
 include("L07")
 include("L08")
 include("L09")
+include("L10")
 
 
 pluginManagement {
