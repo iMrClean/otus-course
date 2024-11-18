@@ -11,6 +11,7 @@ include("L08")
 include("L09")
 include("L10")
 include("L11")
+include("L12")
 
 pluginManagement {
   val jgitver: String by settings

@@ -1,0 +1,15 @@
+.top img {
+  width: 300px;
+  height: 300px;
+}
+
+.top {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}
+
+.top img {
+  width: 300px;
+  height: 300px;
+}
