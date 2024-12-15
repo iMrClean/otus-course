@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Добавление нового клиента</title>
+</head>
+<body>
+
+<h1 th:text="${client.id == null ? 'Добавление нового клиента' : 'Редактирование клиента'}"></h1>
+
+<form th:action="@{/save}" th:object="${client}" method="post">
+
+  <input type="hidden" th:field="*{id}"/>
+
+  <fieldset>
+    <legend>Имя</legend>
+    <div>
+      <label for="name">Имя:</label>
+      <input type="text" id="name" name="name" th:field="*{name}" required>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Адрес</legend>
+    <div>
+      <label for="street">Улица:</label>
+      <input type="text" id="street" name="address.street" th:field="*{address.street}" required>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Телефоны</legend>
+    <div>
+      <label for="phone">Телефон #1:</label>
+      <input type="text" id="phone" name="phones[0].number" th:field="*{phones[0].number}" required>
+    </div>
+  </fieldset>
+
+  <div>
+    <button type="submit">Сохранить</button>
+    <a th:href="@{/}">Отмена</a>
+  </div>
+</form>
+
+</body>
+</html>
