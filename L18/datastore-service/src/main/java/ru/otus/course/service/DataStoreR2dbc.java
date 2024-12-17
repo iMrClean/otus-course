@@ -22,16 +22,36 @@ public class DataStoreR2dbc implements DataStore {
 
   private final Scheduler workerPool;
 
+  private static final String SPECIAL_ROOM_ID = "1408";
+
   @Override
   public Mono<Message> saveMessage(Message message) {
     log.info("saveMessage:{}", message);
+
+    if (SPECIAL_ROOM_ID.equals(message.roomId())) {
+      log.error("Messages cannot be saved to special room: {}", SPECIAL_ROOM_ID);
+      return Mono.error(new IllegalArgumentException("Messages cannot be saved to room " + SPECIAL_ROOM_ID));
+    }
+
     return messageRepository.save(message);
   }
 
   @Override
   public Flux<Message> loadMessages(String roomId) {
     log.info("loadMessages roomId:{}", roomId);
-    return messageRepository.findByRoomId(roomId).delayElements(Duration.of(3, SECONDS), workerPool);
+
+    if (SPECIAL_ROOM_ID.equals(roomId)) {
+      log.info("loading all messages for special room: {}", SPECIAL_ROOM_ID);
+      return loadAllMessages();
+    }
+
+    return messageRepository.findByRoomId(roomId).delayElements(Duration.of(1, SECONDS), workerPool);
+  }
+
+  @Override
+  public Flux<Message> loadAllMessages() {
+    log.info("loadAllMessages");
+    return messageRepository.findAll().delayElements(Duration.of(1, SECONDS), workerPool);
   }
 
 }

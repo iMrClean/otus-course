@@ -32,9 +32,11 @@ public class MessageController {
   @MessageMapping("/message.{roomId}")
   public void getMessage(@DestinationVariable("roomId") String roomId, MessageDTO message) {
     log.info("get message:{}, roomId:{}", message, roomId);
-    saveMessage(roomId, message).subscribe(msgId -> log.info("message send id:{}", msgId));
-
-    template.convertAndSend(String.format("%s%s", TOPIC_TEMPLATE, roomId), new MessageDTO(HtmlUtils.htmlEscape(message.text())));
+    saveMessage(roomId, message)
+      .subscribe(msgId -> {
+        log.info("message send id:{}", msgId);
+        template.convertAndSend(String.format("%s%s", TOPIC_TEMPLATE, roomId), new MessageDTO(HtmlUtils.htmlEscape(message.text())));
+      });
   }
 
   @EventListener

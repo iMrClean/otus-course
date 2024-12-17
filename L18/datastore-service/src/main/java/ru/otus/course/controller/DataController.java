@@ -26,6 +26,7 @@ public class DataController {
     return Mono.just(new Message(null, roomId, messageDTO.text()))
       .doOnNext(msg -> log.info("messageFromChat:{}", msg))
       .flatMap(dataStore::saveMessage)
+      .onErrorResume(e -> Mono.empty())
       .publishOn(workerPool)
       .doOnNext(msgSaved -> log.info("msgSaved id:{}", msgSaved.id()))
       .map(Message::id)
