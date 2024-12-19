@@ -17,6 +17,9 @@ include("L14")
 include("L15")
 include("L16")
 include("L17")
+include ("L18")
+include ("L18:client-service")
+include ("L18:datastore-service")
 
 pluginManagement {
   val jgitver: String by settings
