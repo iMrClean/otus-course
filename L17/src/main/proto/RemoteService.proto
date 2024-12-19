@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package ru.otus.course;
+
+option java_multiple_files = true;
+
+message NumberRequest {
+  int32 firstValue = 1;
+  int32 lastValue = 2;
+}
+
+message NumberResponse {
+  int32 number = 1;
+}
+
+service RemoteService {
+  rpc getNumbers(NumberRequest) returns (stream NumberResponse);
+}
